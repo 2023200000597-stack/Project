@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name= "viewport" content="width=device-width, initial-scale=1.0"/>
+    <title> To-Do List App</title>
+    <style>
+
+
+        body{
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+
+        }
+
+        input {
+            padding: 10px 15px;
+            width: 80%;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+        }
+
+
+
+        button{
+            padding: 10px 15px;
+            border: none;
+            background-color: #5c67f2;
+            color: white;
+            cursor: pointer;
+            border-radius: 10px;
+            margin-left: 5px;
+        }
+
+        ul{
+            list-style: none;
+            padding: 0;
+        }
+
+
+        li{
+            padding: 10px;
+            background-color: #f9f9f9;
+            margin-top: 8px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .todo-buttons button{
+            margin-left: 5px;
+            }
+
+    </style>
+
+
+
+</head>
+
+<body>
+    <div class="container">
+    <h1>To-Do List</h1>
+    <input type="text" id="todo-input" placeholder="Add a new task">
+    <button onclick="addTodo()">Add</button>
+    <ul id="todo-list"></ul>
+    </div>
+    
+
+    <script>
+        let todos = [];
+        function addTodo() {
+            const input= document.getElementById('todo-input');
+            const text= input.value.trim();
+            
+            if (text==='') return;
+
+            const todo ={
+                id: Date.now(),
+                text,
+            };
+
+
+            todos.push(todo);
+            input.value= '';
+            renderTodos();
+        }
+        
+        function renderTodos(){
+            const List = document.getElementById('todo-list');
+            List.innerHTML='';
+
+            todos.forEach(todo => {
+                const li = document.createElement('li');
+                const span = document.createElement('span');
+                span.textContent = todo.text;
+
+                const editBtn = document.createElement('button');
+                editBtn.textContent='Edit';
+                editBtn.onclick = ()=> editTodo(todo.id);
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent='Delete';
+                deleteBtn.onclick = ()=> deleteTodo(todo.id);
+
+
+                li.appendChild(span);
+                li.appendChild(editBtn);
+                li.appendChild(deleteBtn);
+                List.appendChild(li);
+
+                });
+        }
+
+        function editTodo(id){
+            const todo = todos.find(t => t.id === id);
+            const newText = prompt('Edit your todo:', todo.text);
+
+
+            if(newText !== null){
+                todo.text = newText.trim();
+                renderTodos();
+
+            }
+
+        }
+
+        function deleteTodo(id){
+            todos = todos.filter(t =>t.id !== id);
+            renderTodos();
+        }
+
+    </script>
+</body>
+
+
+</html>
